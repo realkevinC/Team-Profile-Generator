@@ -1,9 +1,10 @@
 // classes
-const Manager = require("./lib/Manager")
-const Engineer = require("./lib/Engineer")
-const Intern = require("./lib/Intern")
-
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee")
 const inquirer = require("inquirer");
+const fs = require("fs");
 
 var team = [];
 
@@ -15,7 +16,7 @@ function start() {
             type: 'input',
             name: 'name',
             message: 'What is the name of the Manager',
-            validation: ''
+            // validation: ''
         },
         {
             type: 'input',
@@ -32,11 +33,12 @@ function start() {
             name: 'officeNumber',
             message: 'What is the office number of the Manager'
         },
-    ]).then(results => {
+    ])
+    .then(results => {
         console.log(results);
         // we have new data from the USER
         // we create a new Manager Object INSTANCE
-        var newManager = new Manager(results.name, results.id, results.email, results.officeNumber);
+        const newManager = new Manager(results.name, results.id, results.email, results.officeNumber);
 
         // we have a new instance so we add it to our team
         team.push(newManager);
@@ -47,24 +49,77 @@ function start() {
             // we could add an intern    -->  addIntern()
             // we could end our team and build the HTML page
 
-    }).catch(error => {
+    })
+    .catch(error => {
+        console.log(error)
+    });
+};
+
+// ES6+ styling
+const addEmployee = () => {
+    
+    return inquirer.prompt ([
+    {
+        type: 'list',
+        name: 'role',
+        message: 'What is your role?',
+        choice:['Employee', 'Engineer', 'Intern'],
+    },
+    {
+        type: 'input',
+        name: 'name',
+        message: "What's your name?",
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: "What's your ID?",
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: "What's your email?",
+    },
+    {
+        type: 'input',
+        name: 'github',
+        message: "What's your Github account?",
+        when: (input) => input.role === ('Engineer'),
+    },
+    {
+        type: 'input',
+        name: 'school',
+        message: "What school are you from?",
+        when: (input) => input.role === ('Intern'),
+    },
+    {
+        type: 'confirm',
+        name: 'addTeamMember',
+        message: 'Would you like to add another team member',
+        default: false
+    }
+    ])
+    .then(results => {
+        console.log(results);
+
+    })
+    .catch(error => {
         console.log(error)
     });
 }
 
-start();
 
-// ES6+ styling
-const addEngineer = () => {
-
-}
-
-function addIntern() {
-
-}
+// const addEngineer = () => {
+// }
+// const addIntern = () => {
+// }
 
 
 // create the HTML page
 function createTeam(team) {
 
 }
+
+
+start()
+.then(addEmployee)
