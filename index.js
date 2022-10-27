@@ -57,7 +57,7 @@ function start() {
 
 // ES6+ styling
 const addEmployee = () => {
-    
+
     return inquirer.prompt ([
     {
         type: 'list',
@@ -101,12 +101,31 @@ const addEmployee = () => {
     ])
     .then(results => {
         console.log(results);
+        let employee;
+
+        if(role === "Engineer"){
+            employee = new Engineer (results.name, results.id, results.email, results.github)
+        }
+        else if(role === "Intern"){
+            employee = new Intern (results.name, results.id, results.email, results.school)
+        }
+        else{
+            employee = new Employee(results.name, results.id, results.email)
+        }
+        team.push(employee);
+
+        if (addEmployee){
+            return addEmployee(team);
+        }
+        else{
+            return team
+        }
 
     })
     .catch(error => {
         console.log(error)
     });
-}
+};
 
 
 // const addEngineer = () => {
