@@ -15,7 +15,7 @@ function start() {
         {
             type: 'input',
             name: 'name',
-            message: 'What is the name of the Manager',
+            message: 'What is the name of the Manager'
             // validation: ''
         },
         {
@@ -63,7 +63,7 @@ const addEmployee = () => {
         type: 'list',
         name: 'role',
         message: 'What is your role?',
-        choice:['Employee', 'Engineer', 'Intern'],
+        choice:['Engineer', 'Intern'],
     },
     {
         type: 'input',
@@ -109,9 +109,9 @@ const addEmployee = () => {
         else if(role === "Intern"){
             employee = new Intern (results.name, results.id, results.email, results.school)
         }
-        else{
-            employee = new Employee(results.name, results.id, results.email)
-        }
+        // else{
+        //     employee = new Employee(results.name, results.id, results.email)
+        // }
         team.push(employee);
 
         if (addEmployee){
@@ -120,7 +120,6 @@ const addEmployee = () => {
         else{
             return team
         }
-
     })
     .catch(error => {
         console.log(error)
