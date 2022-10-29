@@ -2,7 +2,7 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const Employee = require("./lib/Employee")
+// const Employee = require("./lib/Employee")
 const inquirer = require("inquirer");
 const fs = require("fs");
 
@@ -43,6 +43,7 @@ function start() {
         // we have a new instance so we add it to our team
         team.push(newManager);
         console.log(team);
+        addEmployee()
 
         // where do we go from here(?) --> a choice option 
             // we could add an engineer  -->  addEngineer()
@@ -138,6 +139,4 @@ function createTeam(team) {
 
 }
 
-
 start()
-.then(addEmployee)
