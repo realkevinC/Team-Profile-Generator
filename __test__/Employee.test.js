@@ -34,16 +34,3 @@ it("test employee role", () => {
     const newEmployee = new Employee('Kevin', 23, 'kevin@gmail.com');
     expect(newEmployee.role).toBe('Employee');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
