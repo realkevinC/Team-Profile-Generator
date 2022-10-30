@@ -5,9 +5,7 @@ const Intern = require("./lib/Intern");
 // const Employee = require("./lib/Employee")
 const inquirer = require("inquirer");
 const fs = require("fs");
-const generateSite = require("./src/generate-site.js")
-const outputDir = path.resolve(__dirname, "dist");
-const outputPath = path.join(outputDir, "team.html");
+// const generateSite = require("./src/generate-site.js")
 
 var team = [];
 // var arrayOfIDs = [];
@@ -32,7 +30,14 @@ function start() {
         {
             type: 'input',
             name: 'id',
-            message: 'What is the id of the Manager'
+            message: 'What is the id of the Manager',
+            validate: (answer) => {
+                if (isNaN(answer)) 
+                {
+                    return "please enter an id"
+                }
+                return true
+            },
         },
         {
             type: 'input',
@@ -49,7 +54,14 @@ function start() {
         {
             type: 'input',
             name: 'officeNumber',
-            message: 'What is the office number of the Manager'
+            message: 'What is the office number of the Manager',
+            validate: (answer) => {
+                if (isNaN(answer)) 
+                {
+                    return "please enter an office number"
+                }
+                return true
+            },
         },
     ])
     .then(results => {
@@ -61,7 +73,7 @@ function start() {
         // we have a new instance so we add it to our team
         team.push(newManager);
         console.log(team);
-        // addEmployee()
+        createTeam()
 
         // where do we go from here(?) --> a choice option 
             // we could add an engineer  -->  addEngineer()
@@ -79,8 +91,8 @@ function createTeam() {
         {
             type: 'list',
             name: 'memberType',
-            message: 'what team member are you adding?',
-            choices: ['Engineer', 'Intern', 'not sure',]
+            message: 'Which team member are you adding?',
+            choices: ['Engineer', 'Intern', 'not adding another team member',]
         },
     ])
     .then((choice) => {
@@ -89,6 +101,7 @@ function createTeam() {
                 addEngineer();
                 break;
             case 'Intern':
+                addIntern()
                 break;
             default:
                 buildTheTeam()
@@ -196,11 +209,11 @@ const addEngineer = () => {
             // check id isnt already taken
             validate: (answer) => {
                 // add variable to check if id doesn't match an existing id
-                if (answer) 
+                if (isNaN(answer)) 
                 {
-                    return true
+                    return "please enter an id"
                 }
-                return "please enter an id"
+                return true
             },
         },
         {
@@ -239,14 +252,16 @@ const addEngineer = () => {
             )
 
         team.push(engineer);
-        arrayOfIDs.push(results.id)
+        // arrayOfIDs.push(results.id)
         console.log(team);
+        createTeam()
 
     })
     .catch(error => {
         console.log(error)
     });
 };
+
 const addIntern = () => {
     inquirer.prompt ([
         {
@@ -268,11 +283,11 @@ const addIntern = () => {
             // check id isnt already taken
             validate: (answer) => {
                 // add variable to check if id doesn't match an existing id
-                if (answer) 
+                if (isNaN(answer)) 
                 {
-                    return true
+                    return "please enter an id"
                 }
-                return "please enter an id"
+                return true
             },
         },
         {
@@ -310,18 +325,27 @@ const addIntern = () => {
             )
 
         team.push(intern);
-        arrayOfIDs.push(results.id)
+        // arrayOfIDs.push(results.id)
         console.log(team);
+        createTeam()
 
     })
     .catch(error => {
         console.log(error)
     });
-}
+};
 
 // create the HTML page
-function buildTheTeam() {
- fs.watchFileSync(outputPath,generateSite(team), "UFT-8")
-}
+const buildTheTeam = results => {
+ fs.watchFile('./dist/teamBuilt.html', results, error => {
+    if (error) {
+        console.log(error);
+        return;
+    }
+    else {
+        console.log("Your team page is built. Check the teamBuilt.html")
+    }
+ })
+};
 
 start()
