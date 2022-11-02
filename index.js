@@ -5,6 +5,7 @@ const Intern = require("./lib/Intern");
 // const Employee = require("./lib/Employee")
 const inquirer = require("inquirer");
 const fs = require("fs");
+const generateTeamPage = require("./src/generate-site");
 // const generateSite = require("./src/generate-site.js")
 
 var team = [];
@@ -20,7 +21,7 @@ function start() {
             name: 'name',
             message: 'What is the name of the Manager',
             validate: (answer) => {
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -44,7 +45,7 @@ function start() {
             name: 'email',
             message: 'What is the email of the Manager',
             validate: (answer) => {
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -104,7 +105,7 @@ function createTeam() {
                 addIntern()
                 break;
             default:
-                buildTheTeam()
+                buildHTML();
         }
     })
 }
@@ -146,7 +147,7 @@ function createTeam() {
 //         name: 'school',
 //         message: "What school are you from?",
 //         validate: (answer) => {
-//             if (answer !== ' ') {
+//             if (answer !== '') {
 //                 return true
 //             }
 //             return "please enter a school"
@@ -195,7 +196,7 @@ const addEngineer = () => {
             name: 'name',
             message: "What's your name?",
             validate: (answer) => {
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -222,7 +223,7 @@ const addEngineer = () => {
             message: "What's your email?",
             validate: (answer) => {
                 // we need to check if email is unique
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -234,7 +235,7 @@ const addEngineer = () => {
             name: 'github',
             message: "What's your Github account?",
             validate: (answer) => {
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -269,7 +270,7 @@ const addIntern = () => {
             name: 'name',
             message: "What's your name?",
             validate: (answer) => {
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -296,7 +297,7 @@ const addIntern = () => {
             message: "What's your email?",
             validate: (answer) => {
                 // we need to check if email is unique
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -309,7 +310,7 @@ const addIntern = () => {
             message:'What school did you go to?',
             validate: (answer) => {
                 // we need to check if email is unique
-                if (answer !== ' ') 
+                if (answer !== '') 
                 {
                     return true
                 }
@@ -336,8 +337,18 @@ const addIntern = () => {
 };
 
 // create the HTML page
+const buildHTML = () => {
+
+    console.log(team); // we have an ARRAY
+    let htmlPage = generateTeamPage(team)
+    buildTheTeam(htmlPage);
+}
+
+
+// Write the HTML file
 const buildTheTeam = results => {
- fs.watchFile('./dist/teamBuilt.html', results, error => {
+
+ fs.writeFile('./dist/teamBuilt.html', results, error => {
     if (error) {
         console.log(error);
         return;
@@ -348,4 +359,6 @@ const buildTheTeam = results => {
  })
 };
 
-start()
+
+
+start();
